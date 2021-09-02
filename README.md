@@ -388,3 +388,27 @@ List roles installed with `ansible-galaxy list`
 - The hosts propery can contain paterns (e.g.: wildcards)
 - The `-i` for inventory also can accept scripts for dinamyc inventory (`ansible-playbook -i inventory.py playbook.yml`).
 
+## Ansible Vault
+
+It's possible to cipher all kind of variables and use it as, for example, passwords into the inventory file.
+
+Create a new encrypted file:
+
+```bash
+ansible-vault create secrets
+```
+
+An example of the content of the file:
+
+```yaml
+ssh_password: P@ssw0rd!
+sudo_password: r00t!!t00r
+```
+
+And it can be used in your inventory or inside the playbook:
+
+```text
+[webservers]
+192.168.1.16 ansible_connection=ssh ansible_user=operator ansible_become_pass='{{sudo_password}}' ansible_ssh_pass='{{ssh_password}}'
+```
+
